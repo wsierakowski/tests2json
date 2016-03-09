@@ -159,3 +159,18 @@ or
 ``` bash
   cat tests.txt | tests2json >> tests.json
 ```
+
+### Programatically in code
+
+Example use when the raw tests input is read from the tests.txt file.
+The convert method returns JavaScript object.
+ 
+```js
+  var t2j = require('tests2json'),
+      fs = require('fs');
+  
+  var rawTests = fs.readFileSync("tests.txt").toString();
+  var jsObjTests = t2j.convert(rawTests);
+  var jsonTests = JSON.stringify(jsObjTests);
+  console.log(jsonTests);
+```
