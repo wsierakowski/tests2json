@@ -4,7 +4,7 @@
   "description": "Converts plain text tests to json",
   "main": "lib/tests2json.js",
   "bin": {
-    "t2j": "./t2j.js"
+    "tests2json": "./tests2json.js"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec test",
