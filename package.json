@@ -1,6 +1,6 @@
 {
   "name": "tests2json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Converts plain text tests to json",
   "main": "lib/tests2json.js",
   "bin": {

@@ -138,9 +138,9 @@ E. All of these
 
 ### Command Line Usage
 ``` bash
-  $tests2json -i tests.txt -o tests.json
+  $ tests2json -i tests.txt -o tests.json
   
-  $tests2json --input tests.txt --output tests.json
+  $ tests2json --input tests.txt --output tests.json
 
   $ tests2json --help
 
@@ -157,7 +157,7 @@ E. All of these
 or
 
 ``` bash
-  cat tests.txt | tests2json >> tests.json
+  $ cat tests.txt | tests2json >> tests.json
 ```
 
 ### Programatically in code
@@ -165,7 +165,7 @@ or
 Example use when the raw tests input is read from the tests.txt file.
 The convert method returns JavaScript object.
  
-```js
+``` js
   var t2j = require('tests2json'),
       fs = require('fs');
   
@@ -173,4 +173,10 @@ The convert method returns JavaScript object.
   var jsObjTests = t2j.convert(rawTests);
   var jsonTests = JSON.stringify(jsObjTests);
   console.log(jsonTests);
+```
+
+## Tests
+
+``` bash
+   $ npm test
 ```

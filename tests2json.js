@@ -10,28 +10,39 @@ var program = require('commander'),
     fs = require('fs'),
     t2j = require('./lib/tests2json');
     
-program
-  .version('0.0.1')
-  .option('-i, --input [value]', 'Input tests text file.')
-  .option('-o, --output [value]', 'Output tests json file.')
-  .parse(process.argv);
+// testing whether input comes from pipe or called from commandline with params
+// https://nodejs.org/api/process.html#process_process_stdout
+// https://www.exratione.com/2015/12/accepting-input-via-stdin-and-arguments-in-a-command-line-node-js-script/
+if (process.stdin.isTTY) {
+  // Command line args args
+  program
+    .version('1.0.1')
+    .description('Converts tests in text format to json.')
+    .option('-i, --input <value>', 'Input tests text file.')
+    .option('-o, --output [value]', 'Output tests json file.')
+    .on('--help', function(){
+      console.log('  Alternatively you can pipe raw tests as input and output the json from the script.');
+      console.log('');
+      console.log('    $ cat tests.txt | tests2json >> tests.json');
+      console.log('');
+    })
+    .parse(process.argv);
 
-if (program.input) {
-  console.log('  - input: ', program.input);
-}
-if (program.output) {
-  console.log('  - output: ', program.output);
-}
+  if (program.input) {
+    //console.log('  - input: ', program.input);
+  } else {
+    console.log('Error: Providing input tests text file is required.');
+    program.outputHelp();
+    process.exit(0);   
+  }
+  
+  if (program.output) {
+    //console.log('  - output: ', program.output);
+  }
+  else {
+    //console.log('  - output: to console (stdout)');
+  }
 
-if (!program.input || !program.output) {
-  process.stdin.resume();
-  process.stdin.setEncoding("utf8");
-  process.stdin.on("data", function(data){
-    //console.log("Here is some data:", data);
-    //process.stdout.write("Here is some data:" + data);
-    process.stdout.write(processTests(data));
-  });  
-} else {
   try {
     var input = fs.readFileSync(program.input).toString();
   } catch (err) {
@@ -44,7 +55,16 @@ if (!program.input || !program.output) {
     fs.writeFileSync(program.output, output);
     console.log('* Tests converted and saved as json to: %s.', program.output);
   }
-}
+} else {
+  // Pipe
+  process.stdin.resume();
+  process.stdin.setEncoding("utf8");
+  process.stdin.on("data", function(data){
+    //console.log("Here is some data:", data);
+    //process.stdout.write("Here is some data:" + data);
+    process.stdout.write(processTests(data));
+  });  
+} 
 
 function processTests(inputTests) {
   return JSON.stringify(t2j.convert(inputTests));
