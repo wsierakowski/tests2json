@@ -33,7 +33,7 @@ if (process.stdin.isTTY) {
   } else {
     console.log('Error: Providing input tests text file is required.');
     program.outputHelp();
-    process.exit(0);   
+    process.exit(1);   
   }
   
   if (program.output) {
@@ -51,9 +51,11 @@ if (process.stdin.isTTY) {
   var output = processTests(input);
   if (!program.output) {
     console.log(output);
+    process.exit(0);
   } else {
     fs.writeFileSync(program.output, output);
     console.log('* Tests converted and saved as json to: %s.', program.output);
+    process.exit(0);
   }
 } else {
   // Pipe
@@ -63,6 +65,7 @@ if (process.stdin.isTTY) {
     //console.log("Here is some data:", data);
     //process.stdout.write("Here is some data:" + data);
     process.stdout.write(processTests(data));
+    process.exit(0); 
   });  
 } 
 
